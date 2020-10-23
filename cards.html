@@ -7,6 +7,16 @@
   <style>
     body {
       background: url(./images/bg.jpg) no-repeat fixed center/cover;
+      margin: 0;
+    }
+
+    .intro {
+      width: 100vw;
+      height: 100vh;
+      margin: auto;
+      position: absolute;
+      background: rgba(0, 0, 0, 0.5) no-repeat fixed center/cover;
+      z-index: 1;
     }
 
     #container {
@@ -114,6 +124,7 @@
       border-radius: 20%;
       background-size: contain;
       display: inline-block;
+
     }
     .front {
       width: 150px;
@@ -145,6 +156,9 @@
   </style>
 </head>
 <body>
+  <div class="intro">
+    <div class="introtext"></div>
+  </div>
   <div id="container">
     <div id="control">
       <div id="boxtop">
@@ -153,7 +167,7 @@
       </div>
       <div id="time">
         時間
-      <span id="texttime">30</span>
+      <span id="texttime">60</span>
       </div>
       <div id="score">
         分數
@@ -166,7 +180,7 @@
   <script>
     const totalCards = 16
     let score = 0;
-    let timeleft = 30;
+    let timeleft = 60;
     let isInGame = false
 
     // 產出卡片
@@ -203,7 +217,7 @@
       // 重設
       score = 0
       $('#text-score').text(score)
-      timeleft = 30
+      timeleft = 60
       $('#text-time').text(timeleft)
 
       let texttime = setInterval(function () {
@@ -219,7 +233,7 @@
           clearInterval(texttime)
           setTimeout(() => {
             alert('時間到')
-          })
+          },1000)
         }
       },1000)
     })
@@ -243,12 +257,17 @@
       }
 
       // 用上面給的 class clear 表示過關
-      if ($('clear').length == totalCards) {
-        setTimeout(() => {
-          alert('過關')
-        }, 1000);
-      }
+      // if ($('clear').length == totalCards / 2) {
+      //   setTimeout(() => {
+      //     alert('過關')
+      //   }, 1000);
+      // } else {
+      //   setTimeout(() => {
+      //     alert('再接再厲')
+      //   }, 1000);
+      // }
     })
+
   </script>
 </body>
 </html>
