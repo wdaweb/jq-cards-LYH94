@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,8 +51,8 @@
       left: 20%;
       position: absolute;
       background-color: rgba(8, 31, 80, 0.8);
-      border: 5px solid rgba(238, 182, 108,0.8);
-      color: rgb(255,255,0);
+      border: 5px solid rgba(238, 182, 108, 0.8);
+      color: rgb(255, 255, 0);
       font-size: 20px;
     }
 
@@ -72,7 +73,7 @@
       width: 200px;
       height: 90px;
       background: rgba(233, 255, 31, 0.8);
-      border: 5px solid rgba(238, 182, 108,0.8);
+      border: 5px solid rgba(238, 182, 108, 0.8);
       border-radius: 5px;
       font-size: 60px;
       line-height: 90px;
@@ -89,11 +90,12 @@
       position: absolute;
 
     }
+
     #textscore {
       width: 200px;
       height: 90px;
       background: rgba(162, 165, 177, 0.8);
-      border: 5px solid rgba(238, 182, 108,0.8);
+      border: 5px solid rgba(238, 182, 108, 0.8);
       border-radius: 5px;
       font-size: 60px;
       line-height: 90px;
@@ -102,17 +104,18 @@
       top: 50px;
       left: 0px;
     }
+
     /* 遊戲區塊 */
     #game {
       width: 720px;
       height: 700px;
       background: rgb(38, 43, 58);
       border-radius: 5%;
-      box-shadow: 10px 10px  rgb(0, 0, 0);
+      box-shadow: 10px 10px rgb(0, 0, 0);
       position: relative;
       display: inline-block;
     }
-    
+
     .card {
       width: 150px;
       height: 150px;
@@ -126,6 +129,7 @@
       display: inline-block;
 
     }
+
     .front {
       width: 150px;
       height: 150px;
@@ -136,9 +140,11 @@
       background-repeat: no-repeat;
       position: absolute;
     }
+
     .close {
       transform: rotateY(180deg);
     }
+
     .back {
       width: 150px;
       height: 150px;
@@ -151,14 +157,10 @@
       position: absolute;
       transform: rotateY(180deg);
     }
-
-    
   </style>
 </head>
+
 <body>
-  <div class="intro">
-    <div class="introtext"></div>
-  </div>
   <div id="container">
     <div id="control">
       <div id="boxtop">
@@ -167,15 +169,16 @@
       </div>
       <div id="time">
         時間
-      <span id="texttime">60</span>
+        <span id="texttime">60</span>
       </div>
       <div id="score">
         分數
-      <span id="textscore">0</span>
+        <span id="textscore">0</span>
       </div>
     </div>
     <div id="game"></div>
   </div>
+  <div id="music"></div>
   <script src="./jquery-3.5.1.min.js"></script>
   <script>
     const totalCards = 16
@@ -194,26 +197,26 @@
 
       // 產生花色 (總共有16張卡片，16張卡片做兩兩配對)
       // 加 1 是因為 i 從 0 開始
-      for (let i = 0; i< $('.card').length / 2; i++) {
+      for (let i = 0; i < $('.card').length / 2; i++) {
         $('.card').eq(i).find('.front').css('background-image', `url(./images/flag${i + 1}.png)`);
-        $('.card').eq(i +($('.card').length / 2)).find('.front').css('background-image', `url(./images/place${i + 1}.png)`);
+        $('.card').eq(i + ($('.card').length / 2)).find('.front').css('background-image', `url(./images/place${i + 1}.png)`);
         // 設置配對的數字
-        $('.card').eq(i).attr('data-card', i+1)
-        $('.card').eq(i + 8).attr('data-card', i+1)
-      }      
-      
-      
+        $('.card').eq(i).attr('data-card', i + 1)
+        $('.card').eq(i + 8).attr('data-card', i + 1)
+      }
+
       // 隨機換卡片位置 (隨機抽一個東西，用.insertAfter把他加在卡片後面)
       for (let i = 0; i < 8; i++) {
         const target = Math.floor(Math.random() * $('.card').length)
         $('.card').eq(target).insertAfter($('.card').eq(i))
-      } 
-     }
+      }
+    }
+
     //  開始遊戲
-    $('#btn-start').click(function(){
+    $('#btn-start').click(function () {
       // 停用開始按鈕
       $(this).attr('disabled', true)
-      
+
       // 重設
       score = 0
       $('#text-score').text(score)
@@ -222,7 +225,7 @@
 
       let texttime = setInterval(function () {
         // 開始倒數
-        timeleft--; 
+        timeleft--;
         $('#texttime').text(timeleft);
         // 剩 5 秒時，秒數變顏色
         if (timeleft <= 5) {
@@ -233,14 +236,14 @@
           clearInterval(texttime)
           setTimeout(() => {
             alert('時間到')
-          },1000)
+          }, 1000)
         }
-      },1000)
+      }, 1000)
     })
 
     // 翻牌
     $('#game').on('click', '.card', function () {
-    // 如果翻起來的卡片少於 2 才能翻
+      // 如果翻起來的卡片少於 2 才能翻
       if ($('.card:not(.close)').length < 2) {
         $(this).removeClass('close')
       }
@@ -250,25 +253,29 @@
         // 如果翻開的卡片一樣，淡出
         if ($('.card:not(.close)').eq(0).attr('data-card') == $('.card:not(.close)').eq(1).attr('data-card')) {
           $('.card:not(.close)').fadeTo(800, 0).addClass('clear')
+          // 加入翻牌成功音效
+          const cheerNum = Math.floor(Math.random() * 4)
+          $("#music").append(`<audio src="./music/cheer${cheerNum}.mp3" autoplay></audio>`)
         }
         setTimeout(() => {
           $('.card:not(.close)').addClass('close')
         }, 1000);
       }
-
-      // 用上面給的 class clear 表示過關
-      // if ($('clear').length == totalCards / 2) {
-      //   setTimeout(() => {
-      //     alert('過關')
-      //   }, 1000);
-      // } else {
-      //   setTimeout(() => {
-      //     alert('再接再厲')
-      //   }, 1000);
-      // }
     })
+
+    // 用上面給的 class clear 表示過關
+    // if ($('clear').length == $(".card").length) {
+    //   clearInterval(gametimer);
+    //   setTimeout(() => {
+    //     alert('過關')
+    //   }, 1000);
+    // } else {
+    //   setTimeout(() => {
+    //     alert('再接再厲')
+    //   }, 1000);
+    // }
 
   </script>
 </body>
-</html>
 
+</html>
